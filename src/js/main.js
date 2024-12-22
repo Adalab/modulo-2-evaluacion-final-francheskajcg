@@ -2,29 +2,35 @@
 
 const charactersUl = document.querySelector(".js_charactersUl");
 
-const characterObj = {
-  _id: 16,
-  films: ["Cheetah"],
-  shortFilms: [],
-  tvShows: [],
-  videoGames: [],
-  parkAttractions: [],
-  allies: [],
-  enemies: [],
-  sourceUrl: "https://disney.fandom.com/wiki/Abdullah",
-  name: "Abdullah",
-  imageUrl:
-    "https://static.wikia.nocookie.net/disney/images/c/cb/1087603-44532-clp-950.jpg",
-  createdAt: "2021-04-12T01:26:02.377Z",
-  updatedAt: "2021-12-20T20:39:18.032Z",
-  url: "https://api.disneyapi.dev/characters/16",
-  __v: 0,
+let AllCharacters = [];
+
+
+const renderOneCharacter = (characterObj) => {
+    const html = `
+    <li class="characters__card">
+        <img class="characters__img" src="${characterObj.imageUrl}" alt="">
+        <p class="characters__name">${characterObj.name}</p>
+    </li>`;
+
+    return html;
+};
+const renderAllCharacters = () => {
+    let html = ''; /*aqui acumulo el html de cada personaje*/
+    for (const characterObj /*este es cada uno de los elementos del array*/ of AllCharacters /*este es el nombre del contenerdor del array*/) {
+        html += renderOneCharacter(characterObj);
+    }
+    charactersUl.innerHTML = html;
 };
 
-charactersUl.innerHTML = `
-<li class="characters__card">
-    <img class="characters__img"
-        src="${characterObj.imageUrl}"
-        alt="">
-        <p class="characters__name">${characterObj.name}</p>
-</li>`;
+// Cuando carga la página
+
+fetch('https://api.disneyapi.dev/character?pageSize=50')
+    .then((response) => response.json())
+    .then((data) => {
+        AllCharacters = data.data;
+        renderAllCharacters();
+
+    });
+
+
+
