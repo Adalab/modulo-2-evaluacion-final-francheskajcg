@@ -1,13 +1,31 @@
 "use strict";
 
+// SECCIÓN DE LOS QUERY SELECTOR
+
 const charactersUl = document.querySelector(".js_charactersUl");
+
+// SECCIÓN DE LOS DATOS DE LA APLICACIÓN
 
 let AllCharacters = [];
 
 
+// SECCIÓN DE FUNCIONES
+
+/*const imageUrlVisible = (imageUrl) => {
+    if (!imageUrl) {
+        return 'https://placehold.co/400x400/ffffff/555555?text=Disney';
+    }
+    return imageUrl;
+
+};
+*/
+
 const renderOneCharacter = (characterObj) => {
+
+    //  const imageUrl = imageUrlVisible(characterObj.imageUrl);
+
     const html = `
-    <li class="characters__card">
+    <li class="js_character characters__card favorite">
         <img class="characters__img" src="${characterObj.imageUrl}" alt="">
         <p class="characters__name">${characterObj.name}</p>
     </li>`;
@@ -20,9 +38,20 @@ const renderAllCharacters = () => {
         html += renderOneCharacter(characterObj);
     }
     charactersUl.innerHTML = html;
+
+    const allCharacterLi = document.querySelectorAll('.js_character');
+
+    for (const li of allCharacterLi) {
+        li.addEventListener('click', handleFavorite);
+    }
 };
 
-// Cuando carga la página
+
+const handleFavorite = (ev) => {
+    ev.currentTarget.classList.toggle('favorite');
+};
+
+// CUANDO CARGA LA PÁGINA
 
 fetch('https://api.disneyapi.dev/character?pageSize=50')
     .then((response) => response.json())
