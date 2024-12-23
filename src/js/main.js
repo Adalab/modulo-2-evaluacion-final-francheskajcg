@@ -9,31 +9,34 @@ const favoritesUl = document.querySelector(".js_favoritesUl");
 // SECCIÓN DE LOS DATOS DE LA APLICACIÓN
 
 let allCharacters = [];
+let favorite = [];
 
 
 // SECCIÓN DE FUNCIONES
 
-/*const imageUrlVisible = (imageUrl) => {
+const imageUrlVisible = (imageUrl) => {
     if (!imageUrl) {
         return 'https://placehold.co/400x400/ffffff/555555?text=Disney';
     }
     return imageUrl;
 
 };
-*/
+
 
 const renderOneCharacter = (characterObj) => {
 
-    //  const imageUrl = imageUrlVisible(characterObj.imageUrl);
+    const imageUrl = imageUrlVisible(characterObj.imageUrl);
 
     const html = `
-    <li class="js_character characters__card">
-        <img class="characters__img" src="${characterObj.imageUrl}" alt="">
+    <li class="js_character characters__card" id="${characterObj._id}">
+        <img class="characters__img" src="${imageUrl}" alt="foto de ${characterObj.name}">
         <p class="characters__name">${characterObj.name}</p>
     </li>`;
 
     return html;
 };
+
+
 const renderAllCharacters = () => {
     let html = ''; /*aqui acumulo el html de cada personaje*/
     for (const characterObj /*este es cada uno de los elementos del array*/ of allCharacters /*este es el nombre del contenerdor del array*/) {
@@ -50,11 +53,23 @@ const renderAllCharacters = () => {
 
 
 const handleFavorite = (ev) => {
+    console.log('favorito');
+    console.log(ev.currentTarget.id);
+
     ev.currentTarget.classList.toggle('favorite');
 
-    const liFavorite = renderOneCharacter();
+    const clickedId = ev.currentTarget.id;
 
-    favoritesUl.innerHTML = liFavorite;
+    const clickedIdNumber = parseInt(clickedId);
+
+    // para buscar en el array general
+    const clickedCharacterObj = allCharacters.find((eachCharacter) => eachCharacter._id === clickedIdNumber);
+
+    const liFavorite = renderOneCharacter(clickedCharacterObj); /*me devuelve el li pintado*/
+    favoritesUl.innerHTML += liFavorite;
+
+    favorite.push(clickedCharacterObj);
+
 };
 
 
