@@ -3,10 +3,12 @@
 // SECCIÓN DE LOS QUERY SELECTOR
 
 const charactersUl = document.querySelector(".js_charactersUl");
+const favoritesUl = document.querySelector(".js_favoritesUl");
+
 
 // SECCIÓN DE LOS DATOS DE LA APLICACIÓN
 
-let AllCharacters = [];
+let allCharacters = [];
 
 
 // SECCIÓN DE FUNCIONES
@@ -25,7 +27,7 @@ const renderOneCharacter = (characterObj) => {
     //  const imageUrl = imageUrlVisible(characterObj.imageUrl);
 
     const html = `
-    <li class="js_character characters__card favorite">
+    <li class="js_character characters__card">
         <img class="characters__img" src="${characterObj.imageUrl}" alt="">
         <p class="characters__name">${characterObj.name}</p>
     </li>`;
@@ -34,7 +36,7 @@ const renderOneCharacter = (characterObj) => {
 };
 const renderAllCharacters = () => {
     let html = ''; /*aqui acumulo el html de cada personaje*/
-    for (const characterObj /*este es cada uno de los elementos del array*/ of AllCharacters /*este es el nombre del contenerdor del array*/) {
+    for (const characterObj /*este es cada uno de los elementos del array*/ of allCharacters /*este es el nombre del contenerdor del array*/) {
         html += renderOneCharacter(characterObj);
     }
     charactersUl.innerHTML = html;
@@ -49,14 +51,20 @@ const renderAllCharacters = () => {
 
 const handleFavorite = (ev) => {
     ev.currentTarget.classList.toggle('favorite');
+
+    const liFavorite = renderOneCharacter();
+
+    favoritesUl.innerHTML = liFavorite;
 };
+
+
 
 // CUANDO CARGA LA PÁGINA
 
 fetch('https://api.disneyapi.dev/character?pageSize=50')
     .then((response) => response.json())
     .then((data) => {
-        AllCharacters = data.data;
+        allCharacters = data.data;
         renderAllCharacters();
 
     });

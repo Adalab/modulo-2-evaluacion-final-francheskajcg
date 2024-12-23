@@ -1,5 +1,7 @@
 .characters {
     text-align: center;
+    display: grid;
+    grid-template-columns: 60% 40%;
 
     &__list {
         display: grid;
@@ -8,8 +10,12 @@
         list-style-type: none;
 
     }
+
+    &__favorites {
+        background-color: lightblue;
+    }
 }
 
 .favorite {
-    background-color: bisque;
+    background-color: lightcyan;
 }
