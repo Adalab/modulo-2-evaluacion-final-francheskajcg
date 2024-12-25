@@ -9,7 +9,7 @@ const favoritesUl = document.querySelector(".js_favoritesUl");
 // SECCIÓN DE LOS DATOS DE LA APLICACIÓN
 
 let allCharacters = [];
-let favorite = [];
+let favorites = [];
 
 
 // SECCIÓN DE FUNCIONES
@@ -51,6 +51,14 @@ const renderAllCharacters = () => {
     }
 };
 
+const renderFavorites = () => {
+    let html = '';
+    for (const characterObj of favorites) {
+        html += renderOneCharacter(characterObj);
+    }
+    favoritesUl.innerHTML = html;
+}
+
 
 const handleFavorite = (ev) => {
     console.log('favorito');
@@ -64,12 +72,24 @@ const handleFavorite = (ev) => {
 
     // para buscar en el array general
     const clickedCharacterObj = allCharacters.find((eachCharacter) => eachCharacter._id === clickedIdNumber);
+    // para buscar en el array de favoritos
+    const favoritesIdx = favorites.findIndex((eachCharacter) => eachCharacter._id === clickedIdNumber);
 
-    const liFavorite = renderOneCharacter(clickedCharacterObj); /*me devuelve el li pintado*/
-    favoritesUl.innerHTML += liFavorite;
+    if (favoritesIdx === -1) {
+        favorites.push(clickedCharacterObj);
+        renderFavorites();
+        //const liFavorite = renderOneCharacter(clickedCharacterObj); /*me devuelve el li pintado*/
+        //favoritesUl.innerHTML += liFavorite;
 
-    favorite.push(clickedCharacterObj);
+    }
+    else {
+        favorites.splice(favoritesIdx, 1);
 
+        renderFavorites();
+
+    }
+
+    localStorage.setItem('charactersFav', JSON.stringify(favorites));
 };
 
 
@@ -83,6 +103,9 @@ fetch('https://api.disneyapi.dev/character?pageSize=50')
         renderAllCharacters();
 
     });
+
+
+
 
 
 
