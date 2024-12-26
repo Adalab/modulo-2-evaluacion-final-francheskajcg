@@ -4,6 +4,8 @@
 
 const charactersUl = document.querySelector(".js_charactersUl");
 const favoritesUl = document.querySelector(".js_favoritesUl");
+const searchInput = document.querySelector(".js_searchInput");
+const searchBtn = document.querySelector(".js_charactersBtn");
 
 
 // SECCIÓN DE LOS DATOS DE LA APLICACIÓN
@@ -27,13 +29,25 @@ const renderOneCharacter = (characterObj) => {
 
     const imageUrl = imageUrlVisible(characterObj.imageUrl);
 
-    const html = `
-    <li class="js_character characters__card" id="${characterObj._id}">
+    const favoritesIdx = favorites.findIndex((eachCharacter) => eachCharacter._id === characterObj._id);
+
+
+    if (favoritesIdx === -1) {
+        const html = `
+        <li class="js_character characters__card" id="${characterObj._id}">
+            <img class="characters__img" src="${imageUrl}" alt="foto de ${characterObj.name}">
+            <p class="characters__name">${characterObj.name}</p>
+        </li>`;
+        return html;
+    }
+    else {
+        const html = `
+    <li class="js_character characters__card favorite" id="${characterObj._id}">
         <img class="characters__img" src="${imageUrl}" alt="foto de ${characterObj.name}">
         <p class="characters__name">${characterObj.name}</p>
     </li>`;
-
-    return html;
+        return html;
+    }
 };
 
 
@@ -64,7 +78,7 @@ const handleFavorite = (ev) => {
     console.log('favorito');
     console.log(ev.currentTarget.id);
 
-    ev.currentTarget.classList.toggle('favorite');
+    // ev.currentTarget.classList.toggle('favorite'); BORRAR!!!!!
 
     const clickedId = ev.currentTarget.id;
 
@@ -78,13 +92,14 @@ const handleFavorite = (ev) => {
     if (favoritesIdx === -1) {
         favorites.push(clickedCharacterObj);
         renderFavorites();
+        renderAllCharacters();
+
         //const liFavorite = renderOneCharacter(clickedCharacterObj); /*me devuelve el li pintado*/
         //favoritesUl.innerHTML += liFavorite;
 
     }
     else {
         favorites.splice(favoritesIdx, 1);
-
         renderFavorites();
 
     }
@@ -104,7 +119,10 @@ fetch('https://api.disneyapi.dev/character?pageSize=50')
 
     });
 
-
+if (localStorage.getItem('charactersFav') !== null) {
+    favorites = JSON.parse(localStorage.getItem('charactersFav'))
+    renderFavorites();
+}
 
 
 
