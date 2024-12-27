@@ -53,9 +53,16 @@ const renderOneCharacter = (characterObj) => {
 
 const renderAllCharacters = () => {
     let html = ''; /*aqui acumulo el html de cada personaje*/
-    for (const characterObj /*este es cada uno de los elementos del array*/ of allCharacters /*este es el nombre del contenerdor del array*/) {
-        html += renderOneCharacter(characterObj);
+
+    if (Array.isArray(allCharacters)) {
+        for (const characterObj of allCharacters) {
+            html += renderOneCharacter(characterObj);
+        }
+    } else {
+        const characterObj = allCharacters;
+        html = renderOneCharacter(characterObj);
     }
+
     charactersUl.innerHTML = html;
 
     const allCharacterLi = document.querySelectorAll('.js_character');
