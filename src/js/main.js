@@ -4,8 +4,8 @@
 
 const charactersUl = document.querySelector(".js_charactersUl");
 const favoritesUl = document.querySelector(".js_favoritesUl");
-const searchInput = document.querySelector(".js_searchInput");
-const searchBtn = document.querySelector(".js_charactersBtn");
+const inputSearch = document.querySelector('.js_inputSearch');
+const btnSearch = document.querySelector('.js_btnSearch');
 
 
 // SECCIÓN DE LOS DATOS DE LA APLICACIÓN
@@ -107,6 +107,30 @@ const handleFavorite = (ev) => {
     localStorage.setItem('charactersFav', JSON.stringify(favorites));
 };
 
+const renderfilteredCharacter = (filterText) => {
+    const apiUrl = `https://api.disneyapi.dev/character?pageSize=50&name=${encodeURIComponent(filterText)}`;
+
+    fetch(apiUrl)
+        .then((response) => response.json())
+        .then((data) => {
+            allCharacters = data.data;
+            renderAllCharacters(allCharacters);
+        })
+};
+
+const handleBtnSearch = (ev) => {
+    ev.preventDefault();
+
+    const filterText = inputSearch.value.toLowerCase().trim();
+    if (filterText !== '') {
+        renderfilteredCharacter(filterText);
+    }
+    else {
+        renderAllCharacters();
+    }
+};
+
+btnSearch.addEventListener('click', handleBtnSearch);
 
 
 // CUANDO CARGA LA PÁGINA
