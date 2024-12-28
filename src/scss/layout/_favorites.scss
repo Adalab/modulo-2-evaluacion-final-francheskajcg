@@ -1,4 +1,9 @@
 .characters__favorites {
+    position: sticky;
+    top: 20px;
+    height: 100vh;
+    overflow-y: auto;
+
     margin-right: 2rem;
     border-radius: 10px;
     border: 1px solid #800080;
