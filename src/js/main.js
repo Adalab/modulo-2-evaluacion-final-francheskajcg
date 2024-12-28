@@ -22,7 +22,6 @@ const imageUrlVisible = (imageUrl) => {
         return 'https://placehold.co/400x400/ffffff/555555?text=Disney';
     }
     return imageUrl;
-
 };
 
 //PINTA UN PERSONAJE
@@ -93,10 +92,7 @@ const renderFavorites = () => {
 
 
 const handleFavorite = (ev) => {
-    console.log('favorito');
     console.log(ev.currentTarget.id);
-
-    // ev.currentTarget.classList.toggle('favorite'); BORRAR!!!!!
 
     const clickedId = ev.currentTarget.id;
 
@@ -111,20 +107,16 @@ const handleFavorite = (ev) => {
         favorites.push(clickedCharacterObj);
         renderFavorites();
         renderAllCharacters();
-
-        //const liFavorite = renderOneCharacter(clickedCharacterObj); /*me devuelve el li pintado*/
-        //favoritesUl.innerHTML += liFavorite;
-
     }
     else {
         favorites.splice(favoritesIdx, 1);
         renderFavorites();
-
     }
 
     localStorage.setItem('charactersFav', JSON.stringify(favorites));
 };
 
+//FILTRAR
 const renderfilteredCharacter = (filterText) => {
     const apiUrl = `https://api.disneyapi.dev/character?pageSize=50&name=${encodeURIComponent(filterText)}`;
 
@@ -141,6 +133,7 @@ const renderfilteredCharacter = (filterText) => {
         })
 };
 
+//EVENTO BOTON DE FILTRAR
 const handleBtnSearch = (ev) => {
     ev.preventDefault();
 
@@ -155,6 +148,8 @@ const handleBtnSearch = (ev) => {
 
 btnSearch.addEventListener('click', handleBtnSearch);
 
+
+//BOTON PARA BORRAR TODOS LO FAVORITOS
 const deleteAllFavorites = (ev) => {
     console.log('fdgg');
     favorites = [];
@@ -165,7 +160,7 @@ const deleteAllFavorites = (ev) => {
 
 btnDeleteAllFavorites.addEventListener('click', deleteAllFavorites);
 
-// Función para manejar el evento de clic en el botón de eliminar
+//MANEJA EL EVENTO CLICK EN ELIMINAR
 const handleDeleteFavorite = (event) => {
     const clickedId = event.target.parentNode.id;
     const favoritesIdx = favorites.findIndex((eachCharacter) => eachCharacter._id === parseInt(clickedId));
@@ -174,7 +169,7 @@ const handleDeleteFavorite = (event) => {
     localStorage.setItem('charactersFav', JSON.stringify(favorites));
 };
 
-// Agregar evento a todos los elementos con la clase "delete-button"
+// AQUI AGREGA EL EVENTO A LOS ELEMENTOS CON ESTA CLASE "delete-button"
 document.addEventListener('click', (event) => {
     if (event.target.classList.contains('delete-button')) {
         handleDeleteFavorite(event);
@@ -186,6 +181,7 @@ document.addEventListener('click', (event) => {
 
 // CUANDO CARGA LA PÁGINA
 
+//LLAMA LOS DATOS DE LA API
 fetch('https://api.disneyapi.dev/character?pageSize=50')
     .then((response) => response.json())
     .then((data) => {
