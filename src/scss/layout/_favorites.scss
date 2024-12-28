@@ -1,0 +1,20 @@
+.characters__favorites {
+    margin-right: 2rem;
+    border-radius: 10px;
+    border: 1px solid #800080;
+    width: 400px;
+    height: 100vw;
+    background-color: rgb(247, 218, 242);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.characters__titleFav {
+    color: #800080;
+    padding: 1rem;
+}
+
+.js_favoritesUl {
+    list-style: none;
+}

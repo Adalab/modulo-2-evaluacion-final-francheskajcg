@@ -158,3 +158,5 @@ if (localStorage.getItem('charactersFav') !== null) {
 
 
 
+
+
