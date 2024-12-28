@@ -6,6 +6,7 @@ const charactersUl = document.querySelector(".js_charactersUl");
 const favoritesUl = document.querySelector(".js_favoritesUl");
 const inputSearch = document.querySelector('.js_inputSearch');
 const btnSearch = document.querySelector('.js_btnSearch');
+const btnDeleteAllFavorites = document.querySelector('.js_btnDeleteAll')
 
 
 // SECCIÓN DE LOS DATOS DE LA APLICACIÓN
@@ -138,6 +139,18 @@ const handleBtnSearch = (ev) => {
 };
 
 btnSearch.addEventListener('click', handleBtnSearch);
+
+const deleteAllFavorites = (ev) => {
+    console.log('fdgg');
+    favorites = [];
+    renderFavorites();
+    localStorage.removeItem('charactersFav');
+    renderAllCharacters(allCharacters);
+}
+
+btnDeleteAllFavorites.addEventListener('click', deleteAllFavorites);
+
+
 
 
 // CUANDO CARGA LA PÁGINA
