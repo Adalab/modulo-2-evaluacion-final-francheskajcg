@@ -16,7 +16,7 @@ let favorites = [];
 
 
 // SECCIÓN DE FUNCIONES
-
+// PINTA LA IMAGEN QUE NO FUNCIONA
 const imageUrlVisible = (imageUrl) => {
     if (!imageUrl) {
         return 'https://placehold.co/400x400/ffffff/555555?text=Disney';
@@ -25,7 +25,7 @@ const imageUrlVisible = (imageUrl) => {
 
 };
 
-
+//PINTA UN PERSONAJE
 const renderOneCharacter = (characterObj) => {
 
     const imageUrl = imageUrlVisible(characterObj.imageUrl);
@@ -40,44 +40,54 @@ const renderOneCharacter = (characterObj) => {
             <p class="characters__name">${characterObj.name}</p>
         </li>`;
         return html;
-    }
-    else {
-        const html = `
+    } else {
+        if (isRenderingFavorites) {
+            const html = `
     <li class="js_character characters__card favorite" id="${characterObj._id}">
         <img class="characters__img" src="${imageUrl}" alt="foto de ${characterObj.name}">
         <p class="characters__name">${characterObj.name}</p>
+        <button class="delete-button"><i class="fa-solid fa-trash"></i></button>
     </li>`;
-        return html;
+            return html;
+        } else {
+            // lista general sin boton
+            const html = `
+            <li class="js_character characters__card favorite" id="${characterObj._id}">
+                <img class="characters__img" src="${imageUrl}" alt="foto de ${characterObj.name}">
+                <p class="characters__name">${characterObj.name}</p>
+            </li>`;
+            return html;
+        }
     }
 };
 
-
+//PINTA TODOS LOS PERSONAJES
 const renderAllCharacters = () => {
     let html = ''; /*aqui acumulo el html de cada personaje*/
 
-    if (Array.isArray(allCharacters)) {
-        for (const characterObj of allCharacters) {
-            html += renderOneCharacter(characterObj);
-        }
-    } else {
-        const characterObj = allCharacters;
-        html = renderOneCharacter(characterObj);
+    for (const characterObj of allCharacters) {
+        html += renderOneCharacter(characterObj);
     }
+
 
     charactersUl.innerHTML = html;
 
     const allCharacterLi = document.querySelectorAll('.js_character');
-
     for (const li of allCharacterLi) {
         li.addEventListener('click', handleFavorite);
     }
 };
+//indicar si estamos renderizando la lista de favoritos
+let isRenderingFavorites = false;
+
 
 const renderFavorites = () => {
+    isRenderingFavorites = true;
     let html = '';
     for (const characterObj of favorites) {
         html += renderOneCharacter(characterObj);
     }
+    isRenderingFavorites = false;
     favoritesUl.innerHTML = html;
 }
 
@@ -121,7 +131,12 @@ const renderfilteredCharacter = (filterText) => {
     fetch(apiUrl)
         .then((response) => response.json())
         .then((data) => {
-            allCharacters = data.data;
+            if (!Array.isArray(data.data)) {
+                allCharacters = [data.data];
+            } else {
+                allCharacters = data.data;
+            }
+
             renderAllCharacters(allCharacters);
         })
 };
@@ -149,6 +164,22 @@ const deleteAllFavorites = (ev) => {
 }
 
 btnDeleteAllFavorites.addEventListener('click', deleteAllFavorites);
+
+// Función para manejar el evento de clic en el botón de eliminar
+const handleDeleteFavorite = (event) => {
+    const clickedId = event.target.parentNode.id;
+    const favoritesIdx = favorites.findIndex((eachCharacter) => eachCharacter._id === parseInt(clickedId));
+    favorites.splice(favoritesIdx, 1);
+    renderFavorites();
+    localStorage.setItem('charactersFav', JSON.stringify(favorites));
+};
+
+// Agregar evento a todos los elementos con la clase "delete-button"
+document.addEventListener('click', (event) => {
+    if (event.target.classList.contains('delete-button')) {
+        handleDeleteFavorite(event);
+    }
+});
 
 
 
