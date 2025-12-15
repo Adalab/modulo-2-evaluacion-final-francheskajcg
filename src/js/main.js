@@ -6,7 +6,7 @@ const charactersUl = document.querySelector(".js_charactersUl");
 const favoritesUl = document.querySelector(".js_favoritesUl");
 const inputSearch = document.querySelector('.js_inputSearch');
 const btnSearch = document.querySelector('.js_btnSearch');
-const btnDeleteAllFavorites = document.querySelector('.js_btnDeleteAll')
+const btnDeleteAllFavorites = document.querySelector('.js_btnDeleteAll');
 
 
 // SECCIÓN DE LOS DATOS DE LA APLICACIÓN
@@ -37,6 +37,8 @@ const renderOneCharacter = (characterObj) => {
         <li class="js_character characters__card" id="${characterObj._id}">
             <img class="characters__img" src="${imageUrl}" alt="foto de ${characterObj.name}">
             <p class="characters__name">${characterObj.name}</p>
+             <p class="date">${characterObj.updatedAt}</p>
+            
         </li>`;
         return html;
     } else {
@@ -53,6 +55,7 @@ const renderOneCharacter = (characterObj) => {
             const html = `
             <li class="js_character characters__card favorite" id="${characterObj._id}">
                 <img class="characters__img" src="${imageUrl}" alt="foto de ${characterObj.name}">
+                <p class="date">${characterObj.updatedAt}</p>
                 <p class="characters__name">${characterObj.name}</p>
             </li>`;
             return html;
@@ -115,6 +118,9 @@ const handleFavorite = (ev) => {
 
     localStorage.setItem('charactersFav', JSON.stringify(favorites));
 };
+
+
+
 
 //FILTRAR
 const renderfilteredCharacter = (filterText) => {

@@ -1,9 +1,22 @@
 .header {
-    background-image: url('../images/disney.jpg');
+    background-image: linear-gradient(rgba(124, 58, 237, 0.6), rgba(124, 58, 237, 0.4)), url('../images/disney.jpg');
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
-    height: 400px;
+    height: 450px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
 
-
+    &::before {
+        content: '';
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 100px;
+        background: linear-gradient(to bottom, transparent, rgba(243, 232, 255, 0.8));
+    }
 }
